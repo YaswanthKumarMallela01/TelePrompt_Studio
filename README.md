@@ -8,13 +8,15 @@ A sleek, premium, always-on-top floating teleprompter overlay for Windows. Posit
 
 - **Webcam Placement**: Always-on-top frameless floating window designed to sit right next to your webcam lens.
 - **Opacity Controls**: Transparent background options (10% to 100% overlay opacity) so you can keep an eye on your camera feed or window content behind the text.
-- **Scroll Engine**: Ultra-smooth scrolling powered exclusively by `requestAnimationFrame`.
+- **Scroll Engine**: Ultra-smooth scrolling powered exclusively by `requestAnimationFrame`, including high-precision sub-pixel movement at fractional speeds (e.g. 0.1× to 0.9×).
 - **Mirror Mode**: Flip the text horizontally for use with physical teleprompter reflection glass.
 - **Rich Customization**: Customize font size (16–72px), font family (Inter, Georgia, Courier New), text/background colors, line height, text alignment, and margins.
 - **Smart Countdown**: Gentle 3-2-1 scale-in countdown before auto-scrolling begins.
 - **Global Hotkeys**: Control the teleprompter (play, pause, speed up/down, restart) even when focusing on another app (OBS, Zoom, Teams, PowerPoint, etc.).
 - **Automatic Persistence**: Window size, position, and all typography/scroller settings persist automatically between sessions.
 - **File Loader**: Open and read standard `.txt` scripts directly into the prompter.
+- **Product Landing Page**: A beautifully designed, responsive marketing landing page under `/website` with platform detection for distribution downloads.
+
 
 ---
 
