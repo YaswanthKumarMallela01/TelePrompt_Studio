@@ -15,6 +15,7 @@ export function useScroller(
   const rafId = useRef<number | null>(null);
   const lastTimestamp = useRef<number>(0);
   const isPlayingRef = useRef(false);
+  const scrollPositionRef = useRef<number>(0);
   const countdownTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const settingsRef = useRef(settings);
   const onEndRef = useRef(onEnd);
@@ -59,14 +60,21 @@ export function useScroller(
     lastTimestamp.current = timestamp;
 
     const scrollAmount = settingsRef.current.scrollSpeed * 30 * deltaTime;
-    const { scrollTop, scrollHeight, clientHeight } = container;
+    const { scrollHeight, clientHeight } = container;
     const maxScroll = scrollHeight - clientHeight;
 
-    if (settingsRef.current.scrollDirection === 'down') {
-      container.scrollTop += scrollAmount;
+    // Sync if user manually scrolled (if difference is larger than 5px)
+    if (Math.abs(container.scrollTop - scrollPositionRef.current) > 5) {
+      scrollPositionRef.current = container.scrollTop;
+    }
 
-      if (scrollTop + scrollAmount >= maxScroll) {
+    if (settingsRef.current.scrollDirection === 'down') {
+      scrollPositionRef.current += scrollAmount;
+      container.scrollTop = scrollPositionRef.current;
+
+      if (scrollPositionRef.current >= maxScroll) {
         container.scrollTop = maxScroll;
+        scrollPositionRef.current = maxScroll;
         isPlayingRef.current = false;
         setState((prev) => ({
           ...prev,
@@ -77,10 +85,12 @@ export function useScroller(
         return;
       }
     } else {
-      container.scrollTop -= scrollAmount;
+      scrollPositionRef.current -= scrollAmount;
+      container.scrollTop = scrollPositionRef.current;
 
-      if (scrollTop - scrollAmount <= 0) {
+      if (scrollPositionRef.current <= 0) {
         container.scrollTop = 0;
+        scrollPositionRef.current = 0;
         isPlayingRef.current = false;
         setState((prev) => ({
           ...prev,
@@ -115,9 +125,15 @@ export function useScroller(
     if (isPlayingRef.current) return;
     isPlayingRef.current = true;
     lastTimestamp.current = 0;
+
+    const container = containerRef.current;
+    if (container) {
+      scrollPositionRef.current = container.scrollTop;
+    }
+
     setState((prev) => ({ ...prev, playback: 'playing', countdownValue: null }));
     rafId.current = requestAnimationFrame(scrollLoop);
-  }, [scrollLoop]);
+  }, [scrollLoop, containerRef]);
 
   const pause = useCallback(() => {
     isPlayingRef.current = false;
@@ -134,8 +150,11 @@ export function useScroller(
     if (container) {
       if (settingsRef.current.scrollDirection === 'down') {
         container.scrollTop = 0;
+        scrollPositionRef.current = 0;
       } else {
-        container.scrollTop = container.scrollHeight - container.clientHeight;
+        const targetScroll = container.scrollHeight - container.clientHeight;
+        container.scrollTop = targetScroll;
+        scrollPositionRef.current = targetScroll;
       }
     }
 
