@@ -15,7 +15,7 @@ A sleek, premium, always-on-top floating teleprompter overlay for Windows. Posit
 - **Global Hotkeys**: Control the teleprompter (play, pause, speed up/down, restart) even when focusing on another app (OBS, Zoom, Teams, PowerPoint, etc.).
 - **Automatic Persistence**: Window size, position, and all typography/scroller settings persist automatically between sessions.
 - **File Loader**: Open and read standard `.txt` scripts directly into the prompter.
-- **Product Landing Page**: A beautifully designed, responsive marketing landing page under `/website` with platform detection for distribution downloads.
+
 
 
 ---
